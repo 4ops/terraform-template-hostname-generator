@@ -1,20 +1,22 @@
 # Hostname generator
 
+[![CircleCI](https://circleci.com/gh/4ops/terraform-template-hostname-generator.svg?style=svg)](https://circleci.com/gh/4ops/terraform-template-hostname-generator)
+
 Generates unique hostnames with format `<prefix>-<id>`.
 
 ## Requirements
 
-* Terraform version 0.12.1+
+- Terraform version 0.12.1+
 
 ## Providers
 
-* random ~> 2.1
-* template ~> 2.1
+- random ~> 2.1
+- template ~> 2.1
 
 ## Attributes
 
-* `name` - List of unique hostnames
-* `fqdn` - List of fqdn (format: `<name>.<domain>`)
+- `name` - List of unique hostnames
+- `fqdn` - List of fqdn (format: `<name>.<domain>`)
 
 ## Arguments
 
@@ -26,7 +28,7 @@ See `example/`
 
 Example outputs:
 
-* When `var.random_id` = true
+- When `var.random_id` = true
 
 ```HCL
 Outputs:
@@ -57,7 +59,7 @@ name = [
 ]
 ```
 
-* When `var.random_id` = false
+- When `var.random_id` = false
 
 ```HCL
 Outputs:
