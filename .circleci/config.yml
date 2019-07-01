@@ -1,0 +1,92 @@
+version: 2.1
+
+# --- executors
+
+executors:
+  terraform:
+    docker:
+      - image: hashicorp/terraform:0.12.1
+    environment:
+      TF_INPUT: "0"
+      TF_IN_AUTOMATION: "1"
+      TF_PLAN: "plan.tfplan"
+
+  tflint:
+    docker:
+      - image: wata727/tflint:0.8.3
+
+# --- commands
+
+commands:
+  validate:
+    description: Validate terraform configuration
+    parameters:
+      tfvars:
+        description: Name of .tfvars file in tests directory for usage
+        type: string
+        default: "_default"
+    steps:
+      - checkout
+      - run: |-
+          terraform init
+          terraform validate -var-file='tests/<< parameters.tfvars >>.tfvars'
+
+  plan:
+    description: Create test plan
+    parameters:
+      tfvars:
+        description: Name of .tfvars file in tests directory for usage
+        type: string
+    steps:
+      - checkout
+      - run: |-
+          terraform init
+          terraform plan -var-file='tests/<< parameters.tfvars >>.tfvars' -out=$TF_PLAN
+
+  lint:
+    description: Check configuration syntax with tflint
+    steps:
+      - checkout
+      - run: tflint
+
+# --- jobs
+
+jobs:
+  validate module:
+    executor: terraform
+    steps:
+      - validate
+
+  plan servers:
+    executor: terraform
+    steps:
+      - plan:
+          tfvars: "servers"
+
+  plan number-id:
+    executor: terraform
+    steps:
+      - plan:
+          tfvars: "number-id"
+
+  plan number-id-format:
+    executor: terraform
+    steps:
+      - plan:
+          tfvars: "number-id-format"
+
+  lint module:
+    executor: tflint
+    steps:
+      - lint
+
+# -- workflows
+
+workflows:
+  tests:
+    jobs:
+      - lint module
+      - validate module
+      - plan servers
+      - plan number-id
+      - plan number-id-format
