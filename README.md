@@ -10,8 +10,8 @@ Generates unique hostnames with format `<prefix>-<id>`.
 
 ## Providers
 
-- random ~> 2.1
-- template ~> 2.1
+- random >= 2.1
+- template >= 2.1
 
 ## Attributes
 

@@ -1,9 +1,9 @@
 terraform {
-  required_version = ">=0.12.1"
+  required_version = ">= 0.12.1"
 
   required_providers {
-    random   = "~> 2.1"
-    template = "~> 2.1"
+    random   = ">= 2.1"
+    template = ">= 2.1"
   }
 }
 
